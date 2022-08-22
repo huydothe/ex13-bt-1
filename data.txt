@@ -1,0 +1,65 @@
+create database demo2;
+use demo2;
+
+create table products(
+id int not null,
+productCode varchar(15) primary key,
+productName varchar(50) not null,
+productPrice int not null,
+productAmount int,
+productDescription varchar(100) not null,
+productStatus bit not null
+);
+
+insert into products(id,productCode, productName, productPrice, productAmount, productDescription, productStatus)
+value(1, '1a', 'iphone1', 1000, 10, 'good', 1);
+
+insert into products(id,productCode, productName, productPrice, productAmount, productDescription, productStatus)
+value(2, '2b', 'iphone2', 1200, 5, 'bad', 0),(3, '3c', 'iphone3', 1400, 100, 'perfect', 1),(4, '4d', 'iphone5', 1500, 150, 'good choice', 0);
+
+insert into products(id,productCode, productName, productPrice, productAmount, productDescription, productStatus)
+value(5, '5e', 'iphone6', 1400, 121, 'not support ios 16', 1),(6, '6f', 'iphone6', 1410, 16, 'not recommend', 0),(7, '7g', 'iphone7', 1450, 150, 'good choice', 1);
+
+select * from products;
+
+alter table products
+add unique index_products(productCode);
+
+create index composite_index
+on products(productName, productPrice);
+
+explain select*from products;
+
+create view view_product as
+select productCode, productName, productPrice, productStatus from products;
+
+select * from view_product;
+
+delimiter //
+
+create procedure selectaAll()
+begin
+select*from products;
+end //
+
+delimiter ;
+
+delimiter //
+
+create procedure InsertSmt( in id int,in productCode varchar(15), in productName varchar(50),
+ in productPrice int, in productAmount int, in productDescription varchar(100), in productStatus bit)
+begin
+insert into products(id,productCode,productName,productPrice,productAmount, productDescription, productStatus)
+value(id,productCode,productName,productPrice,productAmount,productDescription,productStatus);
+end //
+
+delimiter ;
+
+delimiter //
+
+create procedure deleteSmt(newid int)
+begin
+delete from products where id = newid;
+end //
+
+delimiter ;
